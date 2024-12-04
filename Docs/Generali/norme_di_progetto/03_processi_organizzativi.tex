@@ -213,9 +213,9 @@ di supporto e la gestione del personale.
             attraverso una pull request verso il branch da cui esso è stato derivato;\\
             I nomi di questi branch, per quanto riguarda la documentazione, si suddividono in 2 casi:
             \begin{itemize}
-                \item \textbf{Per Verbali e Glossario}:
+                \item \textbf{Per Glossario}:
                 \begin{center}
-                    \textbf{\textit{docs/[NOME-DOCUMENTO]-[COGNOME-ASSEGNATARIO]}}
+                    \textbf{\textit{docs/glossario-[COGNOME-ASSEGNATARIO]}}
                 \end{center}
                 \item \textbf{Per tutto il resto della documentazione}:
                 \begin{center}
@@ -246,10 +246,6 @@ di supporto e la gestione del personale.
         \end{itemize}
 
         In ogni branch secondario il lavoro può essere svolto da un solo componente del gruppo, specificatamente colui che ha preso in carico l'issue alla cui risoluzione quel branch è dedicato.
-        È tuttavia possibile assegnare una issue a più persone; in tal caso, a ciascun assegnatario verrà dedicato un branch su cui lavorare. Al termine delle modifiche, prima di aprire la pull request 
-        per la verifica del lavoro svolto, sarà necessario eseguire il merge dei vari branch secondari tramite una pull request specifica. Quest'ultima non richiederà ulteriori verifiche, poiché tali attività
-        saranno eseguite nell'apposita pull request destinata a questo scopo.
-    
          
         Una volta che la issue viene risolta il componente deve richiedere una pull request
         verso il branch da cui esso è stato derivato.
@@ -382,6 +378,7 @@ di supporto e la gestione del personale.
         alla priorità, ruoli e disponibilità.
         Per marcare le issue secondo criteri di interesse vengono utilizzate delle label:
         \begin{itemize}
+            \item \textbf{correction}: indica una issue o pull request relativa ad una correzione alla documentazione;
             \item \textbf{bug}: indica una issue o pull request relativa ad un errore/bug nel codice;
             \item \textbf{code}: indica una issue o pull request relativa al codice;
             \item \textbf{documentation}: indica una issue o pull request relativa alla documentazione;
