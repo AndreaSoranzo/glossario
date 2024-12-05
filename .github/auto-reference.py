@@ -43,26 +43,18 @@ def Apply_g(defs:list, type:str):
             with open(str(current_path)+"/"+file,'r+',encoding='utf-8') as f:
                 lines = f.readlines()
                 text = '$$'.join(lines)
-                for d in defs:
-                    pattern = re.compile(d, re.IGNORECASE)
-                    matches = [(m.start(), m.end()) for m in pattern.finditer(text)]
-                    for match in matches:
-                        last_char = match[1]
-                        text = text[:last_char] + G_KEYWORD + text[last_char:]
+                lines = f.readlines()
+                for i,line in enumerate(lines): # for each line
+                    current_line = line.split()
+                    for word in current_line:   #for each word
+                        isItalicOrBold = "\\textbf" in word or "\\textit" in word
+                        if isItalicOrBold: # if it is \textbf or \textbf is a valid word anyway
+                                word = word[8:-1]
+                        if word.lower() in defs: # if word is in the definitions add pedice
+                            line = line.replace(word,word+"\\textsuperscript{g}")
+                            lines[i] = line
                 f.seek(0)
-                f.writelines(text.split('$$'))
-                # lines = f.readlines()
-                # for i,line in enumerate(lines): # for each line
-                #     current_line = line.split()
-                #     for word in current_line:   #for each word
-                #         isItalicOrBold = "\\textbf" in word or "\\textit" in word
-                #         if isItalicOrBold: # if it is \textbf or \textbf is a valid word anyway
-                #                 word = word[8:-1]
-                #         if word.lower() in defs: # if word is in the definitions add pedice
-                #             line = line.replace(word,word+"\\textsuperscript{g}")
-                #             lines[i] = line
-                # f.seek(0)
-                # f.writelines(lines)
+                f.writelines(lines)
 
 def ReadAllWords(glox_path):
     defs = []

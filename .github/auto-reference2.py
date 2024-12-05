@@ -39,31 +39,34 @@ def Apply_g(defs:list, type:str):
         for file in  os.listdir(current_path): # for each file file in a doc
             if ".tex" not in file: # if is not a tex file skip
                 continue
-            aggiungiG(str(current_path)+"/"+file, defs)
-            # with open(str(current_path)+"/"+file,'r',encoding='utf-8') as f: #utf-8 per leggere virgolette strane o altri non ASCII
-            #     first = re.sub(r"GitHub Pages[\\textsubscript{g}]?", str(defs.index("GitHub Pages"))*10 + '1', f.read()) #corner case
-            # for word in defs:
-            #     """ controllo i termini già con il pedice distinguendo
-            #      se cominciano per maiuscola e minuscola; così evito di mettere
-            #      il pedice ai termini che sono tutti maiuscoli; e neanche ai
-            #      titoli delle sezioni """
-            #     first = re.sub(rf"(?<!section{{)\b{word.lower()}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '0', first) 
-            #     first = re.sub(rf"(?<!section{{)\b{word}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '1', first)
-            # #print(first)
-            # for word in defs:
-            #     """ controllo i termini senza il pedice, distinguendo
-            #      se cominciano per maiuscola e minuscola """
-            #     first = re.sub(rf"(?<!section{{)\b{word.lower()}\b", str(defs.index(word))*10 + '0', first)
-            #     first = re.sub(rf"(?<!section{{)\b{word}\b", str(defs.index(word))*10 + '1', first)
-            # #print( first)
-            # for i in range(len(defs)-1, -1, -1):
-            #     """ risostituisco partendo dagli indici più alti, perché c'è
-            #      la possibilità che contengano sottostringhe (es. 111111111111111111111 contiene 11111111111) """
-            #     first = re.sub(str(i)*10 + '1', defs[i]+r"\\textsubscript{g}", first)
-            #     first = re.sub(str(i)*10 + '0', defs[i].lower()+r"\\textsubscript{g}", first)
+            with open(str(current_path)+"/"+file,'r',encoding='utf-8') as f: #utf-8 per leggere virgolette strane o altri non ASCII
+                first = re.sub(r"GitHub Pages[\\textsubscript{g}]?", str(defs.index("GitHub Pages"))*10 + '1', f.read()) #corner case
+            for word in defs:
+                """ controllo i termini già con il pedice distinguendo
+                 se cominciano per maiuscola e minuscola; così evito di mettere
+                 il pedice ai termini che sono tutti maiuscoli; e neanche ai
+                 titoli delle sezioni """
+                first = re.sub(rf"(?<!section{{)\b{word.lower()}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '0', first) 
+                first = re.sub(rf"(?<!subsection{{)\b{word.lower()}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '0', first) 
+                first = re.sub(rf"(?<!section{{)\b{word}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '1', first)
+                first = re.sub(rf"(?<!subsection{{)\b{word}"+r"\\textsubscript{g}", str(defs.index(word))*10 + '1', first)
+            #print(first)
+            for word in defs:
+                """ controllo i termini senza il pedice, distinguendo
+                 se cominciano per maiuscola e minuscola """
+                first = re.sub(rf"(?<!section{{)\b{word.lower()}\b", str(defs.index(word))*10 + '0', first)
+                first = re.sub(rf"(?<!subsection{{)\b{word.lower()}\b", str(defs.index(word))*10 + '0', first)
+                first = re.sub(rf"(?<!section{{)\b{word}\b", str(defs.index(word))*10 + '1', first)
+                first = re.sub(rf"(?<!subsection{{)\b{word}\b", str(defs.index(word))*10 + '1', first)
+            #print( first)
+            for i in range(len(defs)-1, -1, -1):
+                """ risostituisco partendo dagli indici più alti, perché c'è
+                 la possibilità che contengano sottostringhe (es. 111111111111111111111 contiene 11111111111) """
+                first = re.sub(str(i)*10 + '1', defs[i]+r"\\textsubscript{g}", first)
+                first = re.sub(str(i)*10 + '0', defs[i].lower()+r"\\textsubscript{g}", first)
 
-            # with open(str(current_path)+"/"+file, 'w', encoding='utf-8') as f:
-            #     f.write(first)
+            with open(str(current_path)+"/"+file, 'w', encoding='utf-8') as f:
+                f.write(first)
 
 def ReadAllWords(glox_path,defs:list):
     with open(glox_path,'r') as f:
@@ -80,30 +83,6 @@ def IsRecent(doc:str):
     document_date=datetime.datetime(int(date[0]),int(date[1]),int(date[2])) # date[0] = year, date[1] = month, date[2] = day
     return lower_bound<=document_date
 
-def aggiungiG(path, elenco_vocaboli):
-    with open(path, 'r', encoding='utf-8') as doc:
-        """ with open(path, 'rb') as f:
-        doc = f.read().replace(b'\x9d', b'\x22').replace(b'\x88', b'\xc3\xa8')
-        first = doc.decode('utf-8', errors='ignore') """
-        #print(first)
-        first = re.sub(r"GitHub Pages[\\textsubscript{g}]?", str(elenco_vocaboli.index("GitHub Pages"))*10 + '0', doc.read())
-    for word in elenco_vocaboli:
-            #print(word, str(elenco_vocaboli.index(word))*10)
-            first = re.sub(rf"(?<!section{{)\b{word.lower()}"+r"\\textsubscript{g}", str(elenco_vocaboli.index(word))*10 + '0', first)#, flags=re.IGNORECASE)
-            first = re.sub(rf"(?<!section{{)\b{word}"+r"\\textsubscript{g}", str(elenco_vocaboli.index(word))*10 + '1', first)#, flags=re.IGNORECASE)
-        #print(first)
-        #print('\n\n')
-    for word in elenco_vocaboli:
-            #print(word, str(elenco_vocaboli.index(word))*10)
-            first = re.sub(rf"(?<!section{{)\b{word.lower()}\b", str(elenco_vocaboli.index(word))*10 + '0', first)#, flags=re.IGNORECASE)
-            first = re.sub(rf"(?<!section{{)\b{word}\b", str(elenco_vocaboli.index(word))*10 + '1', first)#, flags=re.IGNORECASE)
-        #print( first)
-    for i in range(len(elenco_vocaboli)-1, -1, -1):
-            first = re.sub(str(i)*10 + '1', elenco_vocaboli[i]+r"\\textsubscript{g}", first)
-            first = re.sub(str(i)*10 + '0', elenco_vocaboli[i].lower()+r"\\textsubscript{g}", first)
-
-    with open(path, 'w', encoding='utf-8') as doc:
-        doc.write(first)
 
 if __name__ == "__main__":
     main()
